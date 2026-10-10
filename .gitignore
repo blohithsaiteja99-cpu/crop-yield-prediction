@@ -1,0 +1,24 @@
+# Python byte-code
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+venv/
+env/
+.env
+
+# Large raw training dataset (Model is pre-trained in yield_model.pkl)
+crop_yield.csv
+crop_project/crop_yield.csv
+
+# Temporary and IDE files
+tempCodeRunnerFile.*
+crop_project/tempCodeRunnerFile.*
+.vscode/
+.idea/
+.DS_Store

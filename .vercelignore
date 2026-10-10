@@ -1,0 +1,31 @@
+# Datasets & Notebooks
+*.csv
+crop_yield.csv
+crop_project/crop_yield.csv
+*.ipynb
+crop.ipynb
+crop_project/crop.ipynb
+
+# Python bytecode & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.env
+
+# Git & IDE configurations
+.git
+.gitignore
+.vscode/
+.idea/
+.DS_Store
+
+# Other deployment configs
+Dockerfile
+.dockerignore
+render.yaml
+Procfile
+tempCodeRunnerFile.*
+crop_project/tempCodeRunnerFile.*

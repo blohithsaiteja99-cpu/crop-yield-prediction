@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.py"
+    }
+  ],
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "crop_project/**",
+      "excludeFiles": "{crop_yield.csv,crop_project/crop_yield.csv,**/*.csv,**/*.ipynb}"
+    }
+  }
+}

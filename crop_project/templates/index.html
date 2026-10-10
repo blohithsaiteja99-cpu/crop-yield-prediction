@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Crop Yield Predictor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #d1fae5;
+            --accent: #16a34a;
+            --bg-gradient: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #e6fcf0 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            --radius-lg: 18px;
+            --radius-md: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+
+        .navbar-brand .logo-icon {
+            font-size: 26px;
+        }
+
+        .badge-ai {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Main Container */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 820px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 36px 40px;
+            transition: transform 0.3s ease;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-section h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #064e3b;
+            margin-bottom: 8px;
+        }
+
+        .header-section p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .input-hint {
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-main);
+            background: #f8fafc;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-md);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            grid-column: span 2;
+            margin-top: 10px;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+            transition: all 0.25s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 20px -3px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Result Section */
+        #result-box {
+            display: none;
+            margin-top: 28px;
+            padding: 24px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        #result-box.success {
+            background: #f0fdf4;
+            border: 1.5px solid #86efac;
+            color: #065f46;
+        }
+
+        #result-box.error {
+            background: #fef2f2;
+            border: 1.5px solid #fca5a5;
+            color: #991b1b;
+        }
+
+        .result-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .result-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #047857;
+            margin: 4px 0;
+        }
+
+        .result-unit {
+            font-size: 15px;
+            font-weight: 500;
+            color: #065f46;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 680px) {
+            .card-container {
+                padding: 24px 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width, .btn-submit {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="/" class="navbar-brand">
+            <span class="logo-icon">🌾</span>
+            <span>AgriYield AI</span>
+        </a>
+        <span class="badge-ai">ML Yield Predictor</span>
+    </header>
+
+    <main class="main-wrapper">
+        <div class="card-container">
+            <div class="header-section">
+                <h1>Crop Yield Prediction</h1>
+                <p>Enter agricultural and meteorological parameters to predict crop yield.</p>
+            </div>
+
+            <form id="predictForm">
+                <div class="form-grid">
+
+                    <!-- Region -->
+                    <div class="form-group">
+                        <label for="Region">📍 Region</label>
+                        <select id="Region" name="Region" required>
+                            <option value="North">North</option>
+                            <option value="South">South</option>
+                            <option value="East">East</option>
+                            <option value="West">West</option>
+                        </select>
+                    </div>
+
+                    <!-- Soil Type -->
+                    <div class="form-group">
+                        <label for="Soil_Type">🌱 Soil Type</label>
+                        <select id="Soil_Type" name="Soil_Type" required>
+                            <option value="Clay">Clay</option>
+                            <option value="Sandy">Sandy</option>
+                            <option value="Loam">Loam</option>
+                            <option value="Silt">Silt</option>
+                            <option value="Peaty">Peaty</option>
+                            <option value="Chalky">Chalky</option>
+                        </select>
+                    </div>
+
+                    <!-- Crop -->
+                    <div class="form-group">
+                        <label for="Crop">🌽 Crop</label>
+                        <select id="Crop" name="Crop" required>
+                            <option value="Rice">Rice</option>
+                            <option value="Wheat">Wheat</option>
+                            <option value="Maize">Maize</option>
+                            <option value="Cotton">Cotton</option>
+                            <option value="Barley">Barley</option>
+                            <option value="Soybean">Soybean</option>
+                        </select>
+                    </div>
+
+                    <!-- Weather Condition -->
+                    <div class="form-group">
+                        <label for="Weather_Condition">🌤️ Weather Condition</label>
+                        <select id="Weather_Condition" name="Weather_Condition" required>
+                            <option value="Sunny">Sunny</option>
+                            <option value="Rainy">Rainy</option>
+                            <option value="Cloudy">Cloudy</option>
+                        </select>
+                    </div>
+
+                    <!-- Rainfall -->
+                    <div class="form-group">
+                        <label for="Rainfall_mm">
+                            🌧️ Rainfall <span class="input-hint">(mm)</span>
+                        </label>
+                        <input type="number" id="Rainfall_mm" name="Rainfall_mm" step="any" min="0" placeholder="e.g. 500" required>
+                    </div>
+
+                    <!-- Temperature -->
+                    <div class="form-group">
+                        <label for="Temperature_Celsius">
+                            🌡️ Temperature <span class="input-hint">(°C)</span>
+                        </label>
+                        <input type="number" id="Temperature_Celsius" name="Temperature_Celsius" step="any" placeholder="e.g. 26.5" required>
+                    </div>
+
+                    <!-- Fertilizer Used -->
+                    <div class="form-group">
+                        <label for="Fertilizer_Used">🧪 Fertilizer Used</label>
+                        <select id="Fertilizer_Used" name="Fertilizer_Used" required>
+                            <option value="1">Yes (Applied)</option>
+                            <option value="0">No (None)</option>
+                        </select>
+                    </div>
+
+                    <!-- Irrigation Used -->
+                    <div class="form-group">
+                        <label for="Irrigation_Used">💧 Irrigation Used</label>
+                        <select id="Irrigation_Used" name="Irrigation_Used" required>
+                            <option value="1">Yes (Irrigated)</option>
+                            <option value="0">No (Rain-fed)</option>
+                        </select>
+                    </div>
+
+                    <!-- Days to Harvest -->
+                    <div class="form-group full-width">
+                        <label for="Days_to_Harvest">
+                            ⏳ Days to Harvest <span class="input-hint">(Growth Duration)</span>
+                        </label>
+                        <input type="number" id="Days_to_Harvest" name="Days_to_Harvest" step="1" min="1" placeholder="e.g. 110" required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitBtn" class="btn-submit">
+                        <span id="btnText">⚡ Predict Crop Yield</span>
+                    </button>
+                </div>
+            </form>
+
+            <div id="result-box">
+                <div class="result-title" id="result-title">Predicted Result</div>
+                <div class="result-value" id="result-value">--</div>
+                <div class="result-unit" id="result-unit">tons / hectare</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const form = document.getElementById("predictForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const btnText = document.getElementById("btnText");
+        const resultBox = document.getElementById("result-box");
+        const resultTitle = document.getElementById("result-title");
+        const resultValue = document.getElementById("result-value");
+        const resultUnit = document.getElementById("result-unit");
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            // Set loading state
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<span class="spinner"></span> Processing Prediction...';
+            resultBox.style.display = "none";
+
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch("/predict", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json"
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.status === "success") {
+                    resultBox.className = "success";
+                    resultTitle.innerText = "Estimated Crop Yield";
+                    resultValue.innerText = `${data.predicted_yield}`;
+                    resultUnit.innerText = `tons per hectare`;
+                    resultBox.style.display = "block";
+                } else {
+                    resultBox.className = "error";
+                    resultTitle.innerText = "Prediction Error";
+                    resultValue.innerText = "⚠️";
+                    resultUnit.innerText = data.message || "Failed to process prediction";
+                    resultBox.style.display = "block";
+                }
+            } catch (err) {
+                resultBox.className = "error";
+                resultTitle.innerText = "Connection Error";
+                resultValue.innerText = "⚠️";
+                resultUnit.innerText = "Could not communicate with the prediction server.";
+                resultBox.style.display = "block";
+            } finally {
+                submitBtn.disabled = false;
+                btnText.innerText = "⚡ Predict Crop Yield";
+            }
+        });
+    </script>
+</body>
+
+</html>
